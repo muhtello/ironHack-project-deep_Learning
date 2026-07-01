@@ -1,0 +1,14 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Dataset — too large for git, lives on Google Drive / Kaggle instead
+archive.zip
+extracted_animals/
+
+# Generated artifacts — rebuilt by build_labeled_dataset()
+animals10_labeled.csv
+
+# Editor / secrets
+.env
