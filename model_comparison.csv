@@ -1,0 +1,2 @@
+model,accuracy,precision,recall,f1
+baseline_cnn,0.6718,0.6667,0.6151,0.6332
