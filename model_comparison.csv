@@ -1,2 +1,9 @@
-model,accuracy,precision,recall,f1
-baseline_cnn,0.6718,0.6667,0.6151,0.6332
+rank,model,architecture,val_accuracy,val_precision,val_recall,val_f1,train_time_min,verdict
+1,transfer_mobilenet,"MobileNetV2 (ImageNet, frozen) + GAP head",0.9404,0.9338,0.9309,0.9321,4.1,OVERALL WINNER (bonus) - transfer learning; test acc 0.943. Only ~13k trainable params.
+2,transfer_mobilenet_aug,MobileNetV2 (frozen) + GAP + augmentation,0.9256,0.9231,0.9139,0.9172,4.5,Transfer + augmentation - slightly BELOW plain transfer (aug did not help here either)
+3,gap_cnn,GAP head (Flatten replaced by GlobalAveragePooling),0.7403,0.7321,0.7111,0.7136,32.3,Best FROM-SCRATCH model; test acc 0.739 (generalizes)
+4,gap_aug2,"GAP + augmentation (dropout 0.3, 60 epochs)",0.7179,0.7065,0.7053,0.6895,54.7,Augmentation retry - recovers most loss but still below plain GAP
+5,baseline_cnn,Conv blocks + Flatten head,0.6988,0.6875,0.6569,0.6677,15.6,Reference model; overfits (~13% train-val gap)
+6,gap_bn_cnn,GAP + BatchNormalization,0.6924,0.7526,0.6448,0.6593,62.6,BatchNorm hurt accuracy; needed patience=6 (noisy early val_loss)
+7,gap_aug,GAP + augmentation (dropout 0.5),0.6677,0.6511,0.6433,0.63,47.3,Over-regularized (GAP + Dropout 0.5 + augmentation)
+8,gap_deep,GAP + extra 256-filter conv block (~1.17M params),0.1859,0.0186,0.1,0.0314,14.6,FAILED to train - plain deep CNN collapsed at lr=0.001 (needs BN / lower LR)

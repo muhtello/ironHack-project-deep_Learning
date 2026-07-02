@@ -1,8 +1,7 @@
-# %% [markdown]
-# # Step 1 — Fix and verify Animals10 label mapping
-#
+
+
 # The original `translate.py` mixed Italian->English and English->Italian
-# training. This exposes `build_labeled_dataset()` so `main.ipynb` can call
+
 
 
 # %%

@@ -13,18 +13,19 @@ def build_train_val_test_generators(
     val_split=0.15,
     test_split=0.15,
     seed=42,
+    augment=False,
 ):
     """Split df into train/val/test, then wrap each in an ImageDataGenerator
     that resizes every image to image_size and rescales pixels to [0, 1].
-    df['image_path'] must be relative to project_root."""
+    df['image_path'] must be relative to project_root. When augment=True, random
+    flips/rotations/shifts/zoom are added to the TRAIN generator only."""
     train_df, remaining_df = train_test_split(
         df,
         test_size=val_split + test_split,
         stratify=df["label_en"],
         random_state=seed,
     )
-    # test_split's share of remaining_df, so the 3-way split matches the
-    # val_split/test_split ratios passed in, not an accidental 50/50 of the rest.
+    # test_split's share of remaining_df
     remaining_test_share = test_split / (val_split + test_split)
     val_df, test_df = train_test_split(
         remaining_df,
@@ -33,7 +34,18 @@ def build_train_val_test_generators(
         random_state=seed,
     )
 
-    train_datagen = ImageDataGenerator(rescale=1.0 / 255)
+    # Augmentation is applied to TRAIN only; val/test stay rescale-only so
+    if augment:
+        train_datagen = ImageDataGenerator(
+            rescale=1.0 / 255,
+            rotation_range=20,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            horizontal_flip=True,
+            zoom_range=0.15,
+        )
+    else:
+        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
     eval_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
     train_generator = train_datagen.flow_from_dataframe(
@@ -57,7 +69,7 @@ def build_train_val_test_generators(
         class_mode="categorical",
         seed=seed,
         # No shuffle on val/test: keeps predictions aligned with each
-        # generator's own labels/filenames, which evaluation needs later.
+        
         shuffle=False,
     )
 

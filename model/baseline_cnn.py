@@ -1,3 +1,9 @@
+"""baseline_cnn - the reference ("baseline") model.
+
+Name meaning: a plain CNN with no extra tricks yet - 3 conv blocks -> Flatten ->
+Dropout -> softmax
+"""
+
 from tensorflow import keras
 from tensorflow.keras import layers
 
