@@ -1,6 +1,6 @@
 """Gradio demo: upload an animal photo, the trained CNN predicts its class.
 
-Wraps the winning model (gap_cnn) in a tiny web UI so anyone can try it in a
+Wraps the winning model (transfer_mobilenet) in a tiny web UI so anyone can try it in a
 browser - no notebook, no code. Run `python app.py` and open the local URL it
 prints (add share=True for a temporary public link).
 """
